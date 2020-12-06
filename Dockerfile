@@ -33,3 +33,12 @@ RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 RUN apt update && apt install libzip-dev -y && apt clean
 
 RUN docker-php-ext-install pdo pdo_mysql zip
+
+#
+# Composer
+#
+
+RUN apt update && apt install wget -y && apt clean
+
+COPY ./install-composer.sh /root/install-composer.sh
+RUN /root/install-composer.sh

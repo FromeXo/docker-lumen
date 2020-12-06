@@ -20,11 +20,16 @@ RUN printf 'ServerName localhost' >> $APACHE_CONFDIR/conf-available/server-name.
 # Enable server-name.conf
 RUN a2enconf server-name.conf
 
+# Enable mod_rewrite
+RUN a2enmod rewrite
+
 #
 # PHP
 #
 
 # Copy default production config to be the default/base config.
 RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
-# Create a placeholder a custom ini to avoid changing the default/base config.
-RUN touch $PHP_INI_DIR/conf.d/php.custom.ini
+
+RUN apt update && apt install libzip-dev -y && apt clean
+
+RUN docker-php-ext-install pdo pdo_mysql zip
